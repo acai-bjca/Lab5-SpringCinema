@@ -16,36 +16,41 @@ import java.util.List;
  * @author cristian
  */
 public class CinemaFunction {
-    
+
     private Movie movie;
-    private List<List<Boolean>> seats=new ArrayList<>();
+    private List<List<Boolean>> seats = new ArrayList<>();
+    
     private String date;
-    
-    public CinemaFunction(){}
-    
-    public CinemaFunction(Movie movie, String date){
-        this.movie=movie;
-        this.date=date;
-        for (int i=0;i<7;i++){
-            List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
+
+    public CinemaFunction() {
+    }
+
+    public CinemaFunction(Movie movie, String date) {
+        this.movie = movie;
+        this.date = date;
+        for (int i = 0; i < 7; i++) {
+            List<Boolean> row = new ArrayList<>(Arrays.asList(new Boolean[12]));
             Collections.fill(row, Boolean.TRUE);
             this.seats.add(row);
         }
     }
-    
-    public void buyTicket(int row,int col) throws CinemaException{
-        if (seats.get(row).get(col).equals(true)){
-            seats.get(row).set(col,Boolean.FALSE);
+
+    public void buyTicket(int row, int col) throws CinemaException {
+        if(seats.size()<=row || seats.get(0).size() <= col){
+            throw new CinemaException("That seat does not exists.");
         }
-        else{
+        if (seats.get(row).get(col).equals(true)) {
+            seats.get(row).set(col, Boolean.FALSE);
+        } else {
             throw new CinemaException("Seat booked");
         }
     }
     
+
     public List<List<Boolean>> getSeats() {
         return this.seats;
     }
-    
+
     public Movie getMovie() {
         return movie;
     }
@@ -61,8 +66,5 @@ public class CinemaFunction {
     public void setDate(String date) {
         this.date = date;
     }
-    
-    
-    
-    
+
 }
