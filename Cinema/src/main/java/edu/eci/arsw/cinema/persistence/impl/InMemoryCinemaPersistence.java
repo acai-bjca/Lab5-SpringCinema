@@ -5,6 +5,7 @@
  */
 package edu.eci.arsw.cinema.persistence.impl;
 
+import edu.eci.arsw.cinema.filter.Filter;
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Movie;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +27,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class InMemoryCinemaPersistence implements CinemaPersitence {
 
-    private final Map<String, Cinema> cinemas = new HashMap<>();    
+    private final Map<String, Cinema> cinemas = new HashMap<>();
+    
+    @Autowired
+    private Filter filtro;
 
     public InMemoryCinemaPersistence() {
         //load stub data
@@ -78,5 +84,13 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
     public Map<String, Cinema> getCinemas() {
         return cinemas;
     }
-
+    
+    @Override
+    public List<Movie> filterBy(String cinema, String date, String filter) throws CinemaPersistenceException {
+        return filtro.filterBy(getCinemaByName(cinema), date, filter);
+    }
+    
+    public void setFiltro(Filter filtro) {
+        this.filtro = filtro;
+    } 
 }
